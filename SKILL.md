@@ -2,40 +2,45 @@
 name: douyin-realestate-research
 slug: douyin-realestate-research
 displayName: 抖音房产推广接入评估
-version: 1.0.0
-description: 抖音房产推广接入评估结论。触发：抖音、douyin、抖音推广、抖音自动化时先读此结论再行动。
+version: 1.1.0
+description: 抖音平台自动化与房产推广：能力地图、平台风控、推广路径。触发：抖音推广、抖音自动化、douyin。
 ---
 
-# 抖音房产推广接入评估（2026-09-07 调研结论）
+# 抖音运营与自动化（能力地图已盘点定型）
 
-## 核心结论
-1. **无法复刻"主动评论引流"模式**：抖音没有开源"搜索→他人评论区发评论"工具（网页版评论接口签名加密 a_bogus/X-Bogus，发评论能力锁灰产闭源圈）；SkillHub 唯一"自动回复评论"skill（douyin-auto-reply @clawhub_grcdevil-art）实测为空壳（get_comments/reply_comment/send_private_message 全是 TODO 占位，无真实 API 调用）。
-2. **主动评论引流在抖音是平台打击方向**：评论带房源/联系方式=秒吞+限流；2026-05-12《房地产行业公约》生效（无资质禁播、禁夸大、禁虚假引流，违规限流封号）——房产内容合规严打期。
-3. **抖音房产获客主链路**：短视频/直播内容 → 同城流量 → 私信承接 → 留资（63%+购房者线上决策）。发内容+接私信是平台鼓励的。
+## 核心结论（先讲平台现实）
+- **抖音无"主动评论引流"可用工具**（小红书账号2模式不可复刻）：评论区发帖接口签名加密（a_bogus/X-Bogus），发评论能力锁在灰产闭源圈；开源只有只读/发布/私信类工具
+- 评论营销 = 平台打击对象：评论带房源/联系方式秒吞 + 限流；房产内容受《房地产行业公约》合规严打（无资质禁播/禁夸大/禁虚假引流，违规限流封号）
+- 抖音房产获客主流链路：**发短视频/图文 → 开同城展示 → 私信承接 → 留资**（超六成购房者线上决策起点）。发内容+接私信是平台鼓励方向，评论引流是打击方向——与小红书相反（XHS 评论区容忍软广且有现成 MCP）
 
-## 候选工具清单（GitHub）
-| 项目 | 能力 | 用途 |
+## 能力地图（已盘点验证）
+| 能力 | 工具 | 状态 |
 |---|---|---|
-| WJZ-P/douyin-upload-mcp-skill | 创作者中心自动发布视频/图文（CDP+扫码登录） | 发作品 ✅ |
-| Lozzi1910/Douyin-mcp | Playwright 网页版：搜用户/读私信/发私信（Draft.js paste 方案） | 私信承接 ✅ |
-| ztwz-douyin-mcp (wjj9868) | 数据采集分析11工具（Java/Spring AI MCP） | 只读 |
-| yzfly/douyin-mcp-server | 无水印视频下载+AI文案提取（硅基 SenseVoice） | 只读 |
-| undoom-douyin-data-analysis | 关键词搜视频/用户+数据分析（PyPI 可装） | 只读 |
-| alphaply/DouyinComments | 爬指定视频评论 | 只读 |
-| zedisdog/douyin | 视频上传自动化（Go） | 发作品 |
-| bin0o0o0/social_media_pubulish_MCP | playwright 操作创作者后台（含"仅自己可见"草稿） | 发作品 |
-| Douyin-Bot（ADB） | 手机模拟点击 | 废弃 |
+| 发视频/图文 | WJZ-P/douyin-upload-mcp-skill（CDP 操控创作者中心，扫码登录） | ✅ |
+| 发图文/视频草稿 | social_media_pubulish_MCP（playwright 操作创作者后台） | ✅ |
+| 上传自动化 | zedisdog/douyin（Go） | ✅ |
+| 私信读/发 | Lozzi1910/Douyin-mcp（Playwright 网页版，storage_state 持久登录；Draft.js 输入框须 ClipboardEvent paste 注入） | ✅ AI 私信客服路径 |
+| 关键词搜作品/评论/热榜 | SkillHub douyin-search-keyword（@clawhub_um-why） | ✅ 只读 |
+| 无水印视频+文案提取 | yzfly/douyin-mcp-server | ✅ 只读 |
+| 数据采集分析 | ztwz-douyin-mcp / undoom-douyin-data-analysis | ✅ 只读 |
+| 爬指定视频评论 | alphaply/DouyinComments | ✅ 只读 |
+| 自动回复评论 | SkillHub douyin-auto-reply（@clawhub_grcdevil-art） | ❌ 空壳：get_comments/reply_comment/send_private_message 全 TODO 占位返回空/True，无真实 API 调用 |
 
-## SkillHub 侧
-- 20+ 抖音 skill 全是只读或内容侧：下载/文案提取/热榜/视频分析/账号诊断/运营SOP/选题分析/封面生成
-- 可用的只读：`douyin-search-keyword`（@clawhub_um-why，关键词搜索+作品抓取+评论获取+热榜，v1.1.5）→ 用于找房帖/盯竞品/选题
-- 内容侧：douyindashi（运营大师100功能）、douyin-video-script-maker、douyin-sensitive-check（违禁词检测，发布前可用）
+## 落地路径（用户决策项，未实测——选定后按序验证再执行）
+1. **路径A（推荐）**：发布自动化 + 私信承接——装 douyin-upload-mcp-skill 发房源视频/图文（开同城展示 + ≥5 话题标签 + 城市/行业标签）；装 Lozzi1910/Douyin-mcp 做 AI 私信自动回复（复用 llm_comment.py 人设/禁词校验管线思路）
+2. **路径B**：只读数据先行——douyin-search-keyword 搜"城市名+买房"类词，看竞品打法 + 找高互动房帖做选题，先摸清生态
+3. **路径C（不推荐）**：自建 Playwright 评论机器人——需逆向签名 + 持续风控对抗，房产严打期账号风险极高，放弃
 
-## 推荐路径
-- **路径A（推荐）**：douyin-upload-mcp-skill 发房源视频/图文（开同城展示）+ Lozzi1910/Douyin-mcp AI 私信自动回复承接问价客户。扫码登录即可，无风控风险
-- **路径B**：只读数据层先行（douyin-search-keyword 搜"城市名+买房"等词看竞品+找高互动房帖）→ 确认生态值得做再上 A
-- **路径C（不推荐）**：自建 Playwright 评论机器人——签名对抗+房产严打期，风险收益比差
+## 运行纪律（沿用小红书安全参数思路）
+- 写操作低频：单次 1-2 条、间隔 ≥10min、避评论轮次时段；优先只读验证
+- 串行禁并发；禁高峰时段批量操作
+- 账号登录：需用户扫码/短信（MCP 登录流程），禁猜凭据
+- 联系方式（微信号/手机号）禁直接进评论区，一律走私信承接
 
-## 备注
-- 路径需用户拍板后再实施，拍板前不要擅自安装抖音工具
-- 抖音账号体系与其他平台隔离，需用户提供抖音账号扫码登录
+## 红线
+- 评论区禁：房源硬广/联系方式/夸大话术（暴涨/必涨/绝版/最低价）/伪造成交数据
+- 违规处罚分级：轻度=评论/私信功能受限 → 中度=大部分受限 → 重度=永久封禁
+
+## 相关技能
+- xiaohongshu-account-operations / xiaohongshu-comment-leads（小红书版评论引流，方法论可对比不可照搬）
+- skillhub-store（找现成 skill 的搜索/评估/探针流程）
