@@ -1,5 +1,8 @@
 <div align="center">
 
+
+![cover](assets/cover.png)
+
 # douyin-realestate-research
 
 **抖音房产获客：评论引流走不通，正确路径是发内容→同城→私信→留资。**
